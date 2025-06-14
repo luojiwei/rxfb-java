@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.website.mapper.WebsiteBannerMapper">
+    
+    <resultMap type="WebsiteBanner" id="WebsiteBannerResult">
+        <result property="bannerId"    column="banner_id"    />
+        <result property="title"    column="title"    />
+        <result property="imageUrl"    column="image_url"    />
+        <result property="linkType"    column="link_type"    />
+        <result property="refId"    column="ref_id"    />
+        <result property="linkUrl"    column="link_url"    />
+        <result property="position"    column="position"    />
+        <result property="sort"    column="sort"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectWebsiteBannerVo">
+        select banner_id, title, image_url, link_type, ref_id, link_url, position, sort, status, create_by, create_time, update_by, update_time, remark from website_banner
+    </sql>
+
+    <select id="selectWebsiteBannerList" parameterType="WebsiteBanner" resultMap="WebsiteBannerResult">
+        <include refid="selectWebsiteBannerVo"/>
+        <where>  
+            <if test="title != null  and title != ''"> and title like concat('%', #{title}, '%')</if>
+            <if test="linkType != null  and linkType != ''"> and link_type = #{linkType}</if>
+            <if test="position != null  and position != ''"> and position = #{position}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="createBy != null  and createBy != ''"> and create_by like concat('%', #{createBy}, '%')</if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
+            <if test="updateBy != null  and updateBy != ''"> and update_by like concat('%', #{updateBy}, '%')</if>
+            <if test="params.beginUpdateTime != null and params.beginUpdateTime != '' and params.endUpdateTime != null and params.endUpdateTime != ''"> and update_time between #{params.beginUpdateTime} and #{params.endUpdateTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectWebsiteBannerByBannerId" parameterType="Long" resultMap="WebsiteBannerResult">
+        <include refid="selectWebsiteBannerVo"/>
+        where banner_id = #{bannerId}
+    </select>
+
+    <insert id="insertWebsiteBanner" parameterType="WebsiteBanner" useGeneratedKeys="true" keyProperty="bannerId">
+        insert into website_banner
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">title,</if>
+            <if test="imageUrl != null and imageUrl != ''">image_url,</if>
+            <if test="linkType != null and linkType != ''">link_type,</if>
+            <if test="refId != null">ref_id,</if>
+            <if test="linkUrl != null">link_url,</if>
+            <if test="position != null and position != ''">position,</if>
+            <if test="sort != null">sort,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="imageUrl != null and imageUrl != ''">#{imageUrl},</if>
+            <if test="linkType != null and linkType != ''">#{linkType},</if>
+            <if test="refId != null">#{refId},</if>
+            <if test="linkUrl != null">#{linkUrl},</if>
+            <if test="position != null and position != ''">#{position},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWebsiteBanner" parameterType="WebsiteBanner">
+        update website_banner
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="imageUrl != null and imageUrl != ''">image_url = #{imageUrl},</if>
+            <if test="linkType != null and linkType != ''">link_type = #{linkType},</if>
+            <if test="refId != null">ref_id = #{refId},</if>
+            <if test="linkUrl != null">link_url = #{linkUrl},</if>
+            <if test="position != null and position != ''">position = #{position},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where banner_id = #{bannerId}
+    </update>
+
+    <delete id="deleteWebsiteBannerByBannerId" parameterType="Long">
+        delete from website_banner where banner_id = #{bannerId}
+    </delete>
+
+    <delete id="deleteWebsiteBannerByBannerIds" parameterType="String">
+        delete from website_banner where banner_id in 
+        <foreach item="bannerId" collection="array" open="(" separator="," close=")">
+            #{bannerId}
+        </foreach>
+    </delete>
+</mapper>
