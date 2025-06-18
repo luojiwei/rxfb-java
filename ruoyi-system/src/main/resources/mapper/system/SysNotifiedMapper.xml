@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysNotifiedMapper">
+    
+    <resultMap type="SysNotified" id="SysNotifiedResult">
+        <result property="notifiedId"    column="notified_id"    />
+        <result property="notifiedType"    column="notified_type"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="content"    column="content"    />
+        <result property="refId"    column="ref_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="readStatus"    column="read_status"    />
+    </resultMap>
+
+    <sql id="selectSysNotifiedVo">
+        select notified_id, notified_type, create_time, content, ref_id, user_id, read_status from sys_notified
+    </sql>
+
+    <select id="selectSysNotifiedList" parameterType="SysNotified" resultMap="SysNotifiedResult">
+        <include refid="selectSysNotifiedVo"/>
+        <where>  
+            <if test="notifiedType != null  and notifiedType != ''"> and notified_type = #{notifiedType}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="refId != null "> and ref_id = #{refId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="readStatus != null  and readStatus != ''"> and read_status = #{readStatus}</if>
+            <if test="startTime != null "> and create_time >= #{startTime}</if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+    
+    <select id="selectSysNotifiedByNotifiedId" parameterType="Long" resultMap="SysNotifiedResult">
+        <include refid="selectSysNotifiedVo"/>
+        where notified_id = #{notifiedId}
+    </select>
+
+    <insert id="insertSysNotified" parameterType="SysNotified" useGeneratedKeys="true" keyProperty="notifiedId">
+        insert into sys_notified
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="notifiedType != null">notified_type,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="content != null and content != ''">content,</if>
+            <if test="refId != null">ref_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="readStatus != null">read_status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="notifiedType != null">#{notifiedType},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="content != null and content != ''">#{content},</if>
+            <if test="refId != null">#{refId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="readStatus != null">#{readStatus},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysNotified" parameterType="SysNotified">
+        update sys_notified
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="notifiedType != null">notified_type = #{notifiedType},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="refId != null">ref_id = #{refId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="readStatus != null">read_status = #{readStatus},</if>
+        </trim>
+        where notified_id = #{notifiedId}
+    </update>
+
+    <delete id="deleteSysNotifiedByNotifiedIds" parameterType="String">
+        delete from sys_notified where notified_id in 
+        <foreach item="notifiedId" collection="array" open="(" separator="," close=")">
+            #{notifiedId}
+        </foreach>
+    </delete>
+
+    <update id="batchReviseByNotifiedIds" parameterType="SysNotified">
+        update sys_notified set read_status = '1' where notified_id in
+        <foreach collection="notifiedIds" item="notifiedId" open="(" separator="," close=")">
+            #{notifiedId}
+        </foreach>
+    </update>
+</mapper>

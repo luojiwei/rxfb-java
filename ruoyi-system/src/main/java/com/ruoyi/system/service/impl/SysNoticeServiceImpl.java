@@ -1,11 +1,18 @@
 package com.ruoyi.system.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.common.constant.NotifiedConstants;
+import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.system.domain.SysNotified;
+import com.ruoyi.system.service.ISysNotifiedService;
+import com.ruoyi.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.domain.SysNotice;
 import com.ruoyi.system.mapper.SysNoticeMapper;
 import com.ruoyi.system.service.ISysNoticeService;
+import org.springframework.util.CollectionUtils;
 
 /**
  * 公告 服务层实现
@@ -17,6 +24,12 @@ public class SysNoticeServiceImpl implements ISysNoticeService
 {
     @Autowired
     private SysNoticeMapper noticeMapper;
+
+    @Autowired
+    private ISysUserService userService;
+
+    @Autowired
+    private ISysNotifiedService notifiedService;
 
     /**
      * 查询公告信息
@@ -51,7 +64,9 @@ public class SysNoticeServiceImpl implements ISysNoticeService
     @Override
     public int insertNotice(SysNotice notice)
     {
-        return noticeMapper.insertNotice(notice);
+        int rows = noticeMapper.insertNotice(notice);
+        sendNotified(notice);
+        return rows;
     }
 
     /**
@@ -88,5 +103,25 @@ public class SysNoticeServiceImpl implements ISysNoticeService
     public int deleteNoticeByIds(Long[] noticeIds)
     {
         return noticeMapper.deleteNoticeByIds(noticeIds);
+    }
+
+    /**
+     * 批量发送通知
+     *
+     * @param notice
+     */
+    private void sendNotified(SysNotice notice) {
+        SysUser user = new SysUser();
+        List<SysUser> userList = userService.selectUserList(user);
+        if (!CollectionUtils.isEmpty(userList)) {
+            for (SysUser sysUser : userList) {
+                SysNotified sysNotified = new SysNotified();
+                sysNotified.setNotifiedType(NotifiedConstants.NOTICE_TYPE);
+                sysNotified.setUserId(sysUser.getUserId());
+                sysNotified.setContent(notice.getNoticeTitle());
+                sysNotified.setRefId(notice.getNoticeId());
+                notifiedService.insertSysNotified(sysNotified);
+            }
+        }
     }
 }
