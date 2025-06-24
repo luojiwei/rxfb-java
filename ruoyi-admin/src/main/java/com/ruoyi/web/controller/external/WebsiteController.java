@@ -11,7 +11,6 @@ import com.ruoyi.prod.service.IProdProductService;
 import com.ruoyi.website.domain.*;
 import com.ruoyi.website.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,7 +29,7 @@ public class WebsiteController extends BaseController {
     @Autowired
     private IWebsiteBannerService websiteBannerService;
 
-    @PostMapping("/getBannerList")
+    @GetMapping("/getBannerList")
     public TableDataInfo getBannerList(WebsiteBanner banner) {
         startPage();
         List<WebsiteBanner> list = websiteBannerService.selectWebsiteBannerList(banner);
@@ -40,7 +39,7 @@ public class WebsiteController extends BaseController {
     @Autowired
     private IWebsiteCertificateService websiteCertificateService;
 
-    @PostMapping("/getCertificateList")
+    @GetMapping("/getCertificateList")
     public TableDataInfo getCertificateList(WebsiteCertificate certificate) {
         startPage();
         List<WebsiteCertificate> list = websiteCertificateService.selectWebsiteCertificateList(certificate);
@@ -50,7 +49,7 @@ public class WebsiteController extends BaseController {
     @Autowired
     private IWebsiteHonorService websiteHonorService;
 
-    @PostMapping("/getHonorList")
+    @GetMapping("/getHonorList")
     public TableDataInfo getHonorList(WebsiteHonor honor) {
         startPage();
         List<WebsiteHonor> list = websiteHonorService.selectWebsiteHonorList(honor);
@@ -60,7 +59,7 @@ public class WebsiteController extends BaseController {
     @Autowired
     private IWebsitePartnerService websitePartnerService;
 
-    @PostMapping("/getPartnerList")
+    @GetMapping("/getPartnerList")
     public TableDataInfo getPartnerList(WebsitePartner partner) {
         startPage();
         List<WebsitePartner> list = websitePartnerService.selectWebsitePartnerList(partner);
@@ -70,17 +69,32 @@ public class WebsiteController extends BaseController {
     @Autowired
     private IWebsiteNewsService websiteNewsService;
 
-    @PostMapping("/getNewsList")
+    @GetMapping("/getNewsList")
     public TableDataInfo getNewsList(WebsiteNews news) {
         startPage();
         List<WebsiteNews> list = websiteNewsService.selectWebsiteNewsList(news);
         return getDataTable(list);
     }
 
+    @GetMapping(value = "/getNewsDetails/{id}")
+    public AjaxResult getNewsDetails(@PathVariable("id") Long id) {
+        return success(websiteNewsService.selectWebsiteNewsByNewsId(id));
+    }
+
+    @Autowired
+    private IWebsiteProductService websiteProductService;
+
+    @GetMapping("/getProductPosition")
+    public TableDataInfo getProductPosition(WebsiteProduct websiteProduct) {
+        startPage();
+        List<WebsiteProduct> list = websiteProductService.selectWebsiteProductList(websiteProduct);
+        return getDataTable(list);
+    }
+
     @Autowired
     private IProdCategoryService prodCategoryService;
 
-    @PostMapping("/getCategoryList")
+    @GetMapping("/getCategoryList")
     public TableDataInfo getCategoryList(ProdCategory prodCategory) {
         startPage();
         List<ProdCategory> list = prodCategoryService.selectProdCategoryList(prodCategory);
@@ -90,7 +104,7 @@ public class WebsiteController extends BaseController {
     @Autowired
     private IProdProductService prodProductService;
 
-    @PostMapping("/getProductList")
+    @GetMapping("/getProductList")
     public TableDataInfo getProductList(ProductQueryVo queryVo) {
         startPage();
         List<ProdProduct> list = prodProductService.selectProdProductList(queryVo);

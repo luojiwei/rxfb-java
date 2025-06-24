@@ -31,6 +31,10 @@ public class ProdProduct extends BaseEntity
     @Excel(name = "分类ID")
     private Long categoryId;
 
+    /** 商品封面 */
+    @Excel(name = "商品封面")
+    private String cover;
+
     /** 规格型号 */
     @Excel(name = "规格型号")
     private String specification;
@@ -106,7 +110,15 @@ public class ProdProduct extends BaseEntity
         return categoryId;
     }
 
-    public void setSpecification(String specification) 
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
+    }
+
+    public void setSpecification(String specification)
     {
         this.specification = specification;
     }
@@ -201,6 +213,7 @@ public class ProdProduct extends BaseEntity
             .append("productName", getProductName())
             .append("productCode", getProductCode())
             .append("categoryId", getCategoryId())
+            .append("cover", getCover())
             .append("specification", getSpecification())
             .append("unit", getUnit())
             .append("price", getPrice())

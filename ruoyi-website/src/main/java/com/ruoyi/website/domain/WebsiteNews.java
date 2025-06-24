@@ -35,6 +35,10 @@ public class WebsiteNews extends BaseEntity
     @Excel(name = "作者")
     private String author;
 
+    /** 新闻类型 */
+    @Excel(name = "新闻类型(0=公司新闻 1=行业新闻)")
+    private String newsType;
+
     /** 发布时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "发布时间", width = 30, dateFormat = "yyyy-MM-dd")
@@ -96,7 +100,15 @@ public class WebsiteNews extends BaseEntity
         return cover;
     }
 
-    public void setAuthor(String author) 
+    public String getNewsType() {
+        return newsType;
+    }
+
+    public void setNewsType(String newsType) {
+        this.newsType = newsType;
+    }
+
+    public void setAuthor(String author)
     {
         this.author = author;
     }
@@ -198,6 +210,7 @@ public class WebsiteNews extends BaseEntity
             .append("newsDesc", getNewsDesc())
             .append("cover", getCover())
             .append("author", getAuthor())
+            .append("newsType", getNewsType())
             .append("releaseTime", getReleaseTime())
             .append("pageView", getPageView())
             .append("isTop", getIsTop())

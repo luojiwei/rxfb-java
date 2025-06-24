@@ -10,6 +10,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="newsDesc"    column="news_desc"    />
         <result property="cover"    column="cover"    />
         <result property="author"    column="author"    />
+        <result property="newsType"    column="news_type"    />
         <result property="releaseTime"    column="release_time"    />
         <result property="pageView"    column="page_view"    />
         <result property="isTop"    column="is_top"    />
@@ -25,7 +26,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectWebsiteNewsVo">
-        select news_id, title, news_desc, cover, author, release_time, page_view, is_top, is_rmd, tags, content, status, create_by, create_time, update_by, update_time, remark from website_news
+        select news_id, title, news_desc, cover, author, news_type, release_time, page_view, is_top, is_rmd, tags, content, status, create_by, create_time, update_by, update_time, remark from website_news
     </sql>
 
     <select id="selectWebsiteNewsList" parameterType="WebsiteNews" resultMap="WebsiteNewsResult">
@@ -33,6 +34,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>  
             <if test="title != null  and title != ''"> and title like concat('%', #{title}, '%')</if>
             <if test="author != null  and author != ''"> and author like concat('%', #{author}, '%')</if>
+            <if test="newsType != null "> and news_type = #{newsType}</if>
             <if test="params.beginReleaseTime != null and params.beginReleaseTime != '' and params.endReleaseTime != null and params.endReleaseTime != ''"> and release_time between #{params.beginReleaseTime} and #{params.endReleaseTime}</if>
             <if test="isTop != null "> and is_top = #{isTop}</if>
             <if test="isRmd != null "> and is_rmd = #{isRmd}</if>
@@ -46,7 +48,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         ORDER BY create_time DESC
     </select>
 
-    <!-- 搜索商品列表 -->
+    <!-- 搜索新闻列表 -->
     <select id="searchNewsList" parameterType="WebsiteNews" resultMap="WebsiteNewsResult">
         <include refid="selectWebsiteNewsVo"/>
         <where>
@@ -71,6 +73,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="newsDesc != null">news_desc,</if>
             <if test="cover != null">cover,</if>
             <if test="author != null">author,</if>
+            <if test="newsType != null">news_type,</if>
             <if test="releaseTime != null">release_time,</if>
             <if test="pageView != null">page_view,</if>
             <if test="isTop != null">is_top,</if>
@@ -89,6 +92,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="newsDesc != null">#{newsDesc},</if>
             <if test="cover != null">#{cover},</if>
             <if test="author != null">#{author},</if>
+            <if test="newsType != null">#{newsType},</if>
             <if test="releaseTime != null">#{releaseTime},</if>
             <if test="pageView != null">#{pageView},</if>
             <if test="isTop != null">#{isTop},</if>
@@ -111,6 +115,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="newsDesc != null">news_desc = #{newsDesc},</if>
             <if test="cover != null">cover = #{cover},</if>
             <if test="author != null">author = #{author},</if>
+            <if test="newsType != null">news_type = #{newsType},</if>
             <if test="releaseTime != null">release_time = #{releaseTime},</if>
             <if test="pageView != null">page_view = #{pageView},</if>
             <if test="isTop != null">is_top = #{isTop},</if>

@@ -62,6 +62,15 @@ public class ProdCraft extends BaseEntity
     /** 防爆证书 */
     private String certificationEp;
 
+    /** 产品名称 */
+    private String productName;
+
+    /** 产品型号 */
+    private String specification;
+
+    /** 产品搜索词 */
+    private String keyword;
+
     /** 状态（0=正常 1=停用） */
     @Excel(name = "状态", readConverterExp = "0==正常,1==停用")
     private String status;
@@ -226,6 +235,30 @@ public class ProdCraft extends BaseEntity
         return status;
     }
 
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getSpecification() {
+        return specification;
+    }
+
+    public void setSpecification(String specification) {
+        this.specification = specification;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -250,6 +283,9 @@ public class ProdCraft extends BaseEntity
             .append("updateBy", getUpdateBy())
             .append("updateTime", getUpdateTime())
             .append("remark", getRemark())
+            .append("productName", getProductName())
+            .append("specification", getSpecification())
+            .append("keyword", getKeyword())
             .toString();
     }
 }

@@ -8,6 +8,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="craftId"    column="craft_id"    />
         <result property="craftName"    column="craft_name"    />
         <result property="productId"    column="product_id"    />
+        <result property="productName"    column="product_name"    />
+        <result property="specification"    column="specification"    />
         <result property="generalAssemblyDrawing"    column="general_assembly_drawing"    />
         <result property="accessoryDesignDrawing"    column="accessory_design_drawing"    />
         <result property="model3dDiagram"    column="model_3d_diagram"    />
@@ -29,26 +31,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectProdCraftVo">
-        select craft_id, craft_name, product_id, general_assembly_drawing, accessory_design_drawing, model_3d_diagram, assembly_parts_list, electrical_schematic_diagram, wiring_diagram, marking_example_diagram, controlled_details, entity_photo, certification_3c, certification_ma, certification_ep, status, create_by, create_time, update_by, update_time, remark from prod_craft
+        select c.craft_id, c.craft_name, c.product_id, c.general_assembly_drawing, c.accessory_design_drawing, c.model_3d_diagram, c.assembly_parts_list, c.electrical_schematic_diagram, c.wiring_diagram, c.marking_example_diagram, c.controlled_details, c.entity_photo, c.certification_3c, c.certification_ma, c.certification_ep, c.status, c.create_by, c.create_time, c.update_by, c.update_time, c.remark, p.product_name, p.specification FROM prod_craft c left join prod_product p on c.product_id = p.product_id
     </sql>
 
     <select id="selectProdCraftList" parameterType="ProdCraft" resultMap="ProdCraftResult">
         <include refid="selectProdCraftVo"/>
         <where>  
-            <if test="craftName != null  and craftName != ''"> and craft_name like concat('%', #{craftName}, '%')</if>
-            <if test="productId != null "> and product_id = #{productId}</if>
-            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="craftName != null  and craftName != ''"> and c.craft_name like concat('%', #{craftName}, '%')</if>
+            <if test="keyword != null and keyword != ''">
+                AND (p.product_code LIKE CONCAT('%', #{keyword}, '%')
+                OR p.product_name LIKE CONCAT('%', #{keyword}, '%')
+                OR p.specification LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+            <if test="status != null  and status != ''"> and c.status = #{status}</if>
         </where>
+        ORDER BY create_time DESC
     </select>
     
     <select id="selectProdCraftByCraftId" parameterType="Long" resultMap="ProdCraftResult">
         <include refid="selectProdCraftVo"/>
-        where craft_id = #{craftId}
+        where c.craft_id = #{craftId}
     </select>
 
     <select id="selectProdCraftByProductId" parameterType="Long" resultMap="ProdCraftResult">
         <include refid="selectProdCraftVo"/>
-        where product_id = #{productId}
+        where c.product_id = #{productId}
     </select>
 
     <insert id="insertProdCraft" parameterType="ProdCraft" useGeneratedKeys="true" keyProperty="craftId">
