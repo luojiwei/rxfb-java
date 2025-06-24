@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.prod.mapper.ProdTaskMapper">
+    
+    <resultMap type="ProdTask" id="ProdTaskResult">
+        <result property="taskId"    column="task_id"    />
+        <result property="productId"    column="product_id"    />
+        <result property="productName"    column="product_name"    />
+        <result property="taskNum"    column="task_num"    />
+        <result property="urgencyDegree"    column="urgency_degree"    />
+        <result property="completionStatus"    column="completion_status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectProdTaskVo">
+        select task_id, product_id, product_name, task_num, urgency_degree, completion_status, create_by, create_time, update_by, update_time, remark from prod_task
+    </sql>
+
+    <select id="selectProdTaskList" parameterType="ProdTask" resultMap="ProdTaskResult">
+        <include refid="selectProdTaskVo"/>
+        <where>  
+            <if test="productName != null "> and product_name = #{productName}</if>
+            <if test="urgencyDegree != null  and urgencyDegree != ''"> and urgency_degree = #{urgencyDegree}</if>
+            <if test="completionStatus != null  and completionStatus != ''"> and completion_status = #{completionStatus}</if>
+        </where>
+    </select>
+    
+    <select id="selectProdTaskByTaskId" parameterType="Long" resultMap="ProdTaskResult">
+        <include refid="selectProdTaskVo"/>
+        where task_id = #{taskId}
+    </select>
+
+    <insert id="insertProdTask" parameterType="ProdTask" useGeneratedKeys="true" keyProperty="taskId">
+        insert into prod_task
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="productId != null">product_id,</if>
+            <if test="productName != null">product_name,</if>
+            <if test="taskNum != null">task_num,</if>
+            <if test="urgencyDegree != null and urgencyDegree != ''">urgency_degree,</if>
+            <if test="completionStatus != null and completionStatus != ''">completion_status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="productId != null">#{productId},</if>
+            <if test="productName != null">#{productName},</if>
+            <if test="taskNum != null">#{taskNum},</if>
+            <if test="urgencyDegree != null and urgencyDegree != ''">#{urgencyDegree},</if>
+            <if test="completionStatus != null and completionStatus != ''">#{completionStatus},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProdTask" parameterType="ProdTask">
+        update prod_task
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="productId != null">product_id = #{productId},</if>
+            <if test="productName != null">product_name = #{productName},</if>
+            <if test="taskNum != null">task_num = #{taskNum},</if>
+            <if test="urgencyDegree != null and urgencyDegree != ''">urgency_degree = #{urgencyDegree},</if>
+            <if test="completionStatus != null and completionStatus != ''">completion_status = #{completionStatus},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where task_id = #{taskId}
+    </update>
+
+    <delete id="deleteProdTaskByTaskId" parameterType="Long">
+        delete from prod_task where task_id = #{taskId}
+    </delete>
+
+    <delete id="deleteProdTaskByTaskIds" parameterType="String">
+        delete from prod_task where task_id in 
+        <foreach item="taskId" collection="array" open="(" separator="," close=")">
+            #{taskId}
+        </foreach>
+    </delete>
+</mapper>

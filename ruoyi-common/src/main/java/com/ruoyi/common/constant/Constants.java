@@ -46,6 +46,11 @@ public class Constants
     public static final String SUCCESS = "0";
 
     /**
+     * 默认状态
+     */
+    public static final String DEFAULT_STATUS = "0";
+
+    /**
      * 通用失败标识
      */
     public static final String FAIL = "1";

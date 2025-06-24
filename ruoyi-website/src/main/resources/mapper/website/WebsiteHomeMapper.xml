@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.website.mapper.WebsiteHomeMapper">
+    
+    <resultMap type="WebsiteHome" id="WebsiteHomeResult">
+        <result property="id"    column="id"    />
+        <result property="companyName"    column="company_name"    />
+        <result property="companyLogo"    column="company_logo"    />
+        <result property="companyIntro"    column="company_intro"    />
+        <result property="address"    column="address"    />
+        <result property="contacts"    column="contacts"    />
+        <result property="mobile"    column="mobile"    />
+        <result property="companyTel"    column="company_tel"    />
+        <result property="companyFax"    column="company_fax"    />
+    </resultMap>
+
+    <sql id="selectWebsiteHomeVo">
+        select id, company_name, company_logo, company_intro, address, contacts, mobile, company_tel, company_fax from website_home
+    </sql>
+    
+    <select id="selectWebsiteHomeById" parameterType="Long" resultMap="WebsiteHomeResult">
+        <include refid="selectWebsiteHomeVo"/>
+        where id = #{id}
+    </select>
+
+    <update id="updateWebsiteHome" parameterType="WebsiteHome">
+        update website_home
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyName != null and companyName != ''">company_name = #{companyName},</if>
+            <if test="companyLogo != null and companyLogo != ''">company_logo = #{companyLogo},</if>
+            <if test="companyIntro != null and companyIntro != ''">company_intro = #{companyIntro},</if>
+            <if test="address != null and address != ''">address = #{address},</if>
+            <if test="contacts != null and contacts != ''">contacts = #{contacts},</if>
+            <if test="mobile != null and mobile != ''">mobile = #{mobile},</if>
+            <if test="companyTel != null and companyTel != ''">company_tel = #{companyTel},</if>
+            <if test="companyFax != null and companyFax != ''">company_fax = #{companyFax},</if>
+        </trim>
+        where id = #{id}
+    </update>
+</mapper>

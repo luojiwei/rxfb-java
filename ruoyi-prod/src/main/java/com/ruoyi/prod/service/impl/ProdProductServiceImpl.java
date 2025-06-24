@@ -6,12 +6,14 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import com.ruoyi.common.constant.CacheConstants;
+import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.SecurityUtils;
-import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.prod.domain.ProdCategory;
+import com.ruoyi.prod.domain.ProdCraft;
 import com.ruoyi.prod.domain.vo.ProductQueryVo;
 import com.ruoyi.prod.mapper.ProdCategoryMapper;
+import com.ruoyi.prod.mapper.ProdCraftMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -29,11 +31,14 @@ import org.springframework.util.CollectionUtils;
 @Service
 public class ProdProductServiceImpl implements IProdProductService 
 {
-    @Autowired(required = false)
+    @Autowired
     private ProdProductMapper prodProductMapper;
 
-    @Autowired(required = false)
+    @Autowired
     private ProdCategoryMapper prodCategoryMapper;
+
+    @Autowired
+    private ProdCraftMapper prodCraftMapper;
 
     @Autowired
     private RedisTemplate<Object, Object> redisTemplate;
@@ -94,14 +99,20 @@ public class ProdProductServiceImpl implements IProdProductService
     @Override
     public int insertProdProduct(ProdProduct prodProduct)
     {
-        // 自动生成产品编码
-        if (StringUtils.isEmpty(prodProduct.getProductCode())) {
-            prodProduct.setProductCode(generateProductCode());
-        }
-
+        prodProduct.setProductCode(generateProductCode());
         prodProduct.setCreateBy(SecurityUtils.getUsername());
         prodProduct.setCreateTime(DateUtils.getNowDate());
-        return prodProductMapper.insertProdProduct(prodProduct);
+        int rows = prodProductMapper.insertProdProduct(prodProduct);
+
+        ProdCraft prodCraft = new ProdCraft();
+        prodCraft.setProductId(prodProduct.getProductId());
+        prodCraft.setCraftName(prodProduct.getProductName() + prodProduct.getSpecification());
+        prodCraft.setStatus(Constants.DEFAULT_STATUS);
+        prodCraft.setCreateBy(SecurityUtils.getUsername());
+        prodCraft.setCreateTime(DateUtils.getNowDate());
+        prodCraftMapper.insertProdCraft(prodCraft);
+
+        return rows;
     }
 
     /**

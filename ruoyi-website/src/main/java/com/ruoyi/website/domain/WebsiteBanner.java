@@ -36,8 +36,8 @@ public class WebsiteBanner extends BaseEntity
     /** 外部链接地址 */
     private String linkUrl;
 
-    /** 显示位置(home-首页,product-产品页,news-新闻页) */
-    @Excel(name = "显示位置(home-首页,product-产品页,news-新闻页)")
+    /** 显示位置(0首页,1-产品页,2-新闻页) */
+    @Excel(name = "显示位置(0-首页,1-产品页,2-新闻页)")
     private String position;
 
     /** 显示顺序 */

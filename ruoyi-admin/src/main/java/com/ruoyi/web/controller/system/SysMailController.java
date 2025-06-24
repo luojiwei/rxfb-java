@@ -65,20 +65,9 @@ public class SysMailController extends BaseController
     }
 
     /**
-     * 删除邮件
-     */
-    @PreAuthorize("@ss.hasPermi('system:mail:remove')")
-    @Log(title = "邮件信息", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{id}")
-    public AjaxResult remove(@PathVariable("id") Long id)
-    {
-        return toAjax(sysMailService.deleteSysMailById(id));
-    }
-
-    /**
      * 查询用户发送的邮件列表
      */
-    @PreAuthorize("@ss.hasPermi('system:mail:add')")
+    @PreAuthorize("@ss.hasPermi('system:mail:list')")
     @GetMapping("/sentList")
     public TableDataInfo sentList(Long userId)
     {
@@ -90,7 +79,7 @@ public class SysMailController extends BaseController
     /**
      * 查询用户接收的邮件列表
      */
-    @PreAuthorize("@ss.hasPermi('system:mail:query')")
+    @PreAuthorize("@ss.hasPermi('system:mail:list')")
     @GetMapping("/receivedList")
     public TableDataInfo receivedList(Long userId)
     {

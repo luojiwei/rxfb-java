@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.prod.mapper.ProdCraftMapper">
+    
+    <resultMap type="ProdCraft" id="ProdCraftResult">
+        <result property="craftId"    column="craft_id"    />
+        <result property="craftName"    column="craft_name"    />
+        <result property="productId"    column="product_id"    />
+        <result property="generalAssemblyDrawing"    column="general_assembly_drawing"    />
+        <result property="accessoryDesignDrawing"    column="accessory_design_drawing"    />
+        <result property="model3dDiagram"    column="model_3d_diagram"    />
+        <result property="assemblyPartsList"    column="assembly_parts_list"    />
+        <result property="electricalSchematicDiagram"    column="electrical_schematic_diagram"    />
+        <result property="wiringDiagram"    column="wiring_diagram"    />
+        <result property="markingExampleDiagram"    column="marking_example_diagram"    />
+        <result property="controlledDetails"    column="controlled_details"    />
+        <result property="entityPhoto"    column="entity_photo"    />
+        <result property="certification3c"    column="certification_3c"    />
+        <result property="certificationMa"    column="certification_ma"    />
+        <result property="certificationEp"    column="certification_ep"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectProdCraftVo">
+        select craft_id, craft_name, product_id, general_assembly_drawing, accessory_design_drawing, model_3d_diagram, assembly_parts_list, electrical_schematic_diagram, wiring_diagram, marking_example_diagram, controlled_details, entity_photo, certification_3c, certification_ma, certification_ep, status, create_by, create_time, update_by, update_time, remark from prod_craft
+    </sql>
+
+    <select id="selectProdCraftList" parameterType="ProdCraft" resultMap="ProdCraftResult">
+        <include refid="selectProdCraftVo"/>
+        <where>  
+            <if test="craftName != null  and craftName != ''"> and craft_name like concat('%', #{craftName}, '%')</if>
+            <if test="productId != null "> and product_id = #{productId}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectProdCraftByCraftId" parameterType="Long" resultMap="ProdCraftResult">
+        <include refid="selectProdCraftVo"/>
+        where craft_id = #{craftId}
+    </select>
+
+    <select id="selectProdCraftByProductId" parameterType="Long" resultMap="ProdCraftResult">
+        <include refid="selectProdCraftVo"/>
+        where product_id = #{productId}
+    </select>
+
+    <insert id="insertProdCraft" parameterType="ProdCraft" useGeneratedKeys="true" keyProperty="craftId">
+        insert into prod_craft
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="craftName != null and craftName != ''">craft_name,</if>
+            <if test="productId != null">product_id,</if>
+            <if test="generalAssemblyDrawing != null">general_assembly_drawing,</if>
+            <if test="accessoryDesignDrawing != null">accessory_design_drawing,</if>
+            <if test="model3dDiagram != null">model_3d_diagram,</if>
+            <if test="assemblyPartsList != null">assembly_parts_list,</if>
+            <if test="electricalSchematicDiagram != null">electrical_schematic_diagram,</if>
+            <if test="wiringDiagram != null">wiring_diagram,</if>
+            <if test="markingExampleDiagram != null">marking_example_diagram,</if>
+            <if test="controlledDetails != null">controlled_details,</if>
+            <if test="entityPhoto != null">entity_photo,</if>
+            <if test="certification3c != null">certification_3c,</if>
+            <if test="certificationMa != null">certification_ma,</if>
+            <if test="certificationEp != null">certification_ep,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="craftName != null and craftName != ''">#{craftName},</if>
+            <if test="productId != null">#{productId},</if>
+            <if test="generalAssemblyDrawing != null">#{generalAssemblyDrawing},</if>
+            <if test="accessoryDesignDrawing != null">#{accessoryDesignDrawing},</if>
+            <if test="model3dDiagram != null">#{model3dDiagram},</if>
+            <if test="assemblyPartsList != null">#{assemblyPartsList},</if>
+            <if test="electricalSchematicDiagram != null">#{electricalSchematicDiagram},</if>
+            <if test="wiringDiagram != null">#{wiringDiagram},</if>
+            <if test="markingExampleDiagram != null">#{markingExampleDiagram},</if>
+            <if test="controlledDetails != null">#{controlledDetails},</if>
+            <if test="entityPhoto != null">#{entityPhoto},</if>
+            <if test="certification3c != null">#{certification3c},</if>
+            <if test="certificationMa != null">#{certificationMa},</if>
+            <if test="certificationEp != null">#{certificationEp},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProdCraft" parameterType="ProdCraft">
+        update prod_craft
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="craftName != null and craftName != ''">craft_name = #{craftName},</if>
+            <if test="productId != null">product_id = #{productId},</if>
+            <if test="generalAssemblyDrawing != null">general_assembly_drawing = #{generalAssemblyDrawing},</if>
+            <if test="accessoryDesignDrawing != null">accessory_design_drawing = #{accessoryDesignDrawing},</if>
+            <if test="model3dDiagram != null">model_3d_diagram = #{model3dDiagram},</if>
+            <if test="assemblyPartsList != null">assembly_parts_list = #{assemblyPartsList},</if>
+            <if test="electricalSchematicDiagram != null">electrical_schematic_diagram = #{electricalSchematicDiagram},</if>
+            <if test="wiringDiagram != null">wiring_diagram = #{wiringDiagram},</if>
+            <if test="markingExampleDiagram != null">marking_example_diagram = #{markingExampleDiagram},</if>
+            <if test="controlledDetails != null">controlled_details = #{controlledDetails},</if>
+            <if test="entityPhoto != null">entity_photo = #{entityPhoto},</if>
+            <if test="certification3c != null">certification_3c = #{certification3c},</if>
+            <if test="certificationMa != null">certification_ma = #{certificationMa},</if>
+            <if test="certificationEp != null">certification_ep = #{certificationEp},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where craft_id = #{craftId}
+    </update>
+
+    <delete id="deleteProdCraftByCraftId" parameterType="Long">
+        delete from prod_craft where craft_id = #{craftId}
+    </delete>
+
+    <delete id="deleteProdCraftByCraftIds" parameterType="String">
+        delete from prod_craft where craft_id in 
+        <foreach item="craftId" collection="array" open="(" separator="," close=")">
+            #{craftId}
+        </foreach>
+    </delete>
+</mapper>
