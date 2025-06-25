@@ -70,6 +70,14 @@ public class ProdProduct extends BaseEntity
     /** 删除标志(0存在 1删除) */
     private String delFlag;
 
+    /** 技术参数图 */
+    @Excel(name = "技术参数图")
+    private String technicalSpecification;
+
+    /** 标签 */
+    @Excel(name = "标签")
+    private String tags;
+
     public void setProductId(Long productId)
     {
         this.productId = productId;
@@ -206,6 +214,22 @@ public class ProdProduct extends BaseEntity
         return productIntro;
     }
 
+    public String getTechnicalSpecification() {
+        return technicalSpecification;
+    }
+
+    public void setTechnicalSpecification(String technicalSpecification) {
+        this.technicalSpecification = technicalSpecification;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -228,6 +252,8 @@ public class ProdProduct extends BaseEntity
             .append("updateTime", getUpdateTime())
             .append("remark", getRemark())
             .append("productIntro", getProductIntro())
+            .append("technicalSpecification", getTechnicalSpecification())
+            .append("tags", getTags())
             .toString();
     }
 }

@@ -1,8 +1,10 @@
 package com.ruoyi.web.controller.external;
 
+import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.prod.domain.ProdCategory;
 import com.ruoyi.prod.domain.ProdProduct;
 import com.ruoyi.prod.domain.vo.ProductQueryVo;
@@ -11,6 +13,7 @@ import com.ruoyi.prod.service.IProdProductService;
 import com.ruoyi.website.domain.*;
 import com.ruoyi.website.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -111,4 +114,17 @@ public class WebsiteController extends BaseController {
         return getDataTable(list);
     }
 
+    @GetMapping(value = "/getProductDetails/{id}")
+    public AjaxResult getProductDetails(@PathVariable("id") Long id) {
+        return success(prodProductService.selectProdProductByProductId(id));
+    }
+
+    @Autowired
+    private IWebsiteContactService websiteContactService;
+
+    @PostMapping("/addContact")
+    public AjaxResult addContact(@RequestBody WebsiteContact websiteContact)
+    {
+        return toAjax(websiteContactService.insertWebsiteContact(websiteContact));
+    }
 }
