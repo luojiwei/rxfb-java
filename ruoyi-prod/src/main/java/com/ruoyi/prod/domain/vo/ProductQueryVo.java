@@ -29,6 +29,9 @@ public class ProductQueryVo extends BaseEntity {
     
     /** 分类ID列表（用于查询子分类） */
     private List<Long> categoryIds;
+
+    /** 产品型号 */
+    private String specification;
     
     /** 是否包含子分类产品（true包含 false不包含） */
     private Boolean includeChild;

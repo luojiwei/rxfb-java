@@ -23,10 +23,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateBy"    column="update_by"    />
         <result property="updateTime"    column="update_time"    />
         <result property="remark"    column="remark"    />
+        <result property="sort"    column="sort"    />
     </resultMap>
 
     <sql id="selectWebsiteNewsVo">
-        select news_id, title, news_desc, cover, author, news_type, release_time, page_view, is_top, is_rmd, tags, content, status, create_by, create_time, update_by, update_time, remark from website_news
+        select news_id, title, news_desc, cover, author, news_type, release_time, page_view, is_top, is_rmd, tags, content, status, sort, create_by, create_time, update_by, update_time, remark from website_news
     </sql>
 
     <select id="selectWebsiteNewsList" parameterType="WebsiteNews" resultMap="WebsiteNewsResult">
@@ -86,6 +87,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateBy != null">update_by,</if>
             <if test="updateTime != null">update_time,</if>
             <if test="remark != null">remark,</if>
+            <if test="sort != null">sort,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="title != null and title != ''">#{title},</if>
@@ -105,6 +107,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateBy != null">#{updateBy},</if>
             <if test="updateTime != null">#{updateTime},</if>
             <if test="remark != null">#{remark},</if>
+            <if test="sort != null">#{sort},</if>
          </trim>
     </insert>
 
@@ -128,6 +131,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateBy != null">update_by = #{updateBy},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
             <if test="remark != null">remark = #{remark},</if>
+            <if test="sort != null">sort = #{sort},</if>
         </trim>
         where news_id = #{newsId}
     </update>

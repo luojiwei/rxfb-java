@@ -67,6 +67,10 @@ public class WebsiteNews extends BaseEntity
     @Excel(name = "状态", readConverterExp = "0==正常,1==停用")
     private String status;
 
+    /** 显示顺序 */
+    @Excel(name = "显示顺序")
+    private Long sort;
+
     /** 搜索关键词 */
     private String keyword;
 
@@ -202,6 +206,14 @@ public class WebsiteNews extends BaseEntity
         return keyword;
     }
 
+    public Long getSort() {
+        return sort;
+    }
+
+    public void setSort(Long sort) {
+        this.sort = sort;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -224,6 +236,7 @@ public class WebsiteNews extends BaseEntity
             .append("updateTime", getUpdateTime())
             .append("remark", getRemark())
             .append("keyword", getKeyword())
+            .append("sort", getSort())
             .toString();
     }
 }
