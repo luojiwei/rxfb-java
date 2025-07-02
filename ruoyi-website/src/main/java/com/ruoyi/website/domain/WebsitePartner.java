@@ -30,6 +30,10 @@ public class WebsitePartner extends BaseEntity
     @Excel(name = "显示顺序")
     private Long sort;
 
+    /** 跳转连接 */
+    @Excel(name = "跳转连接")
+    private String link;
+
     /** 状态（0=正常 1=停用） */
     @Excel(name = "状态", readConverterExp = "0==正常,1==停用")
     private String status;
@@ -84,6 +88,14 @@ public class WebsitePartner extends BaseEntity
         return status;
     }
 
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -97,6 +109,7 @@ public class WebsitePartner extends BaseEntity
             .append("updateBy", getUpdateBy())
             .append("updateTime", getUpdateTime())
             .append("remark", getRemark())
+            .append("link", getLink())
             .toString();
     }
 }

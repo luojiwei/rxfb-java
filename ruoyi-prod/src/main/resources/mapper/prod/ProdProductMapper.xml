@@ -26,10 +26,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="productIntro"    column="product_intro"    />
         <result property="technicalSpecification"    column="technical_specification"    />
         <result property="tags"    column="tags"    />
+        <result property="specGroup"    column="spec_group"    />
     </resultMap>
 
     <sql id="selectProdProductVo">
-        select product_id, product_name, product_code, category_id, cover, specification, unit, price, cost_price, stock_warn, images, technical_specification, status, del_flag, create_by, create_time, update_by, update_time, remark, product_intro, tags from prod_product
+        select product_id, product_name, product_code, category_id, cover, specification, spec_group, unit, price, cost_price, stock_warn, images, technical_specification, status, del_flag, create_by, create_time, update_by, update_time, remark, product_intro, tags from prod_product
     </sql>
 
     <select id="selectProdProductList" parameterType="ProdProduct" resultMap="ProdProductResult">
@@ -37,11 +38,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>  
             <if test="productName != null  and productName != ''"> and product_name like concat('%', #{productName}, '%')</if>
             <if test="productCode != null  and productCode != ''"> and product_code = #{productCode}</if>
-            <if test="categoryId != null and includeChild == false">
-                AND category_id = #{categoryId}
-            </if>
             <if test="specification != null and specification != ''">
                 AND specification like concat('%', #{specification}, '%')
+            </if>
+            <if test="categoryId != null and includeChild == false">
+                AND category_id = #{categoryId}
             </if>
             <if test="categoryIds != null and categoryIds.size() > 0">
                 AND category_id IN
@@ -60,7 +61,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>
             <if test="keyword != null and keyword != ''">
                 AND (product_code LIKE CONCAT('%', #{keyword}, '%')
-                OR product_name LIKE CONCAT('%', #{keyword}, '%'))
+                OR product_name LIKE CONCAT('%', #{keyword}, '%')
+                OR specification LIKE CONCAT('%', #{keyword}, '%'))
             </if>
             AND status = "0"
         </where>
@@ -95,6 +97,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="productIntro != null">product_intro,</if>
             <if test="technicalSpecification != null">technical_specification,</if>
             <if test="tags != null">tags,</if>
+            <if test="specGroup != null">spec_group,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="productName != null and productName != ''">#{productName},</if>
@@ -117,6 +120,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="productIntro != null">#{productIntro},</if>
             <if test="technicalSpecification != null">#{technicalSpecification},</if>
             <if test="tags != null">#{tags},</if>
+            <if test="specGroup != null">#{spec_group},</if>
          </trim>
     </insert>
 
@@ -140,6 +144,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="remark != null">remark = #{remark},</if>
             <if test="technicalSpecification != null">technical_specification = #{technicalSpecification},</if>
             <if test="tags != null">tags = #{tags},</if>
+            <if test="specGroup != null">spec_group = #{specGroup},</if>
         </trim>
         where product_id = #{productId}
     </update>

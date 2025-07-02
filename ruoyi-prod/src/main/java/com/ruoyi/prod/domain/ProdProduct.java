@@ -78,6 +78,18 @@ public class ProdProduct extends BaseEntity
     @Excel(name = "标签")
     private String tags;
 
+    /** 型号组合名 */
+    @Excel(name = "型号组合名")
+    private String specGroup;
+
+    public String getSpecGroup() {
+        return specGroup;
+    }
+
+    public void setSpecGroup(String specGroup) {
+        this.specGroup = specGroup;
+    }
+
     public void setProductId(Long productId)
     {
         this.productId = productId;
@@ -254,6 +266,7 @@ public class ProdProduct extends BaseEntity
             .append("productIntro", getProductIntro())
             .append("technicalSpecification", getTechnicalSpecification())
             .append("tags", getTags())
+            .append("specGroup", getSpecGroup())
             .toString();
     }
 }

@@ -15,10 +15,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateBy"    column="update_by"    />
         <result property="updateTime"    column="update_time"    />
         <result property="remark"    column="remark"    />
+        <result property="link"    column="link"    />
     </resultMap>
 
     <sql id="selectWebsitePartnerVo">
-        select partner_id, title, image_url, sort, status, create_by, create_time, update_by, update_time, remark from website_partner
+        select partner_id, title, image_url, sort, status, create_by, create_time, update_by, update_time, remark, link from website_partner
     </sql>
 
     <select id="selectWebsitePartnerList" parameterType="WebsitePartner" resultMap="WebsitePartnerResult">
@@ -51,6 +52,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateBy != null">update_by,</if>
             <if test="updateTime != null">update_time,</if>
             <if test="remark != null">remark,</if>
+            <if test="link != null">link,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="title != null and title != ''">#{title},</if>
@@ -62,6 +64,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateBy != null">#{updateBy},</if>
             <if test="updateTime != null">#{updateTime},</if>
             <if test="remark != null">#{remark},</if>
+            <if test="link != null">#{link},</if>
          </trim>
     </insert>
 
@@ -77,6 +80,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateBy != null">update_by = #{updateBy},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
             <if test="remark != null">remark = #{remark},</if>
+            <if test="link != null">link = #{link},</if>
         </trim>
         where partner_id = #{partnerId}
     </update>
