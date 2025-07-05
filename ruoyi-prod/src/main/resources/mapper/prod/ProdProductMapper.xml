@@ -120,7 +120,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="productIntro != null">#{productIntro},</if>
             <if test="technicalSpecification != null">#{technicalSpecification},</if>
             <if test="tags != null">#{tags},</if>
-            <if test="specGroup != null">#{spec_group},</if>
+            <if test="specGroup != null">#{specGroup},</if>
          </trim>
     </insert>
 
